@@ -1,13 +1,16 @@
 import { useState } from "react";
+import Task from "./Task";
 
 function App() {
   return (
     <>
-      <section className="w-[380px] bg-[#FFFDF4] rounded-3xl">
-        <h2>asdkja</h2>
-        <h2>asdkja</h2>
-        <h2>asdkja</h2>
-        <h2>asdkja</h2>
+      <section className="w-[380px] bg-[#000000] text-white rounded-3xl px-10 py-5">
+        <h2 className="font-bold text-xl">Today's Task</h2>
+        <Task />
+        <Task />
+        <Task />
+        <Task />
+        <Task />
       </section>
     </>
   );
