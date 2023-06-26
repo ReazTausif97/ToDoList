@@ -21,10 +21,7 @@ export const reducer = (state, action) => {
     return { ...state };
   } else if (action.type === "ADD_NEW") {
     const alltasks = state.Tasks;
-    alltasks.push({
-      ...alltasks[alltasks.length - 1],
-      id: Date.now(),
-    });
+    alltasks.push(action.payload.newTask);
     state.Tasks = alltasks;
     // console.log(state);
     return { ...state };

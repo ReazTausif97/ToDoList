@@ -6,40 +6,64 @@ import { defaultState } from "./Reducer";
 
 const Root = () => {
   let [state, dispatch] = useReducer(reducer, defaultState);
-
+  let [show, setShow] = useState("-bottom-80");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const newTask = Object.fromEntries(formData);
+    newTask["isDone"] = false;
+    newTask["id"] = Date.now();
+    console.log(newTask);
+    dispatch({ type: "ADD_NEW", payload: { newTask } });
+  };
   return (
     <div>
-      <section className="w-[380px] relative bg-[#000000] text-white rounded-3xl  px-5 py-5  ">
+      <section className="w-[380px] relative bg-[#000000] text-white rounded-3xl overflow-hidden px-5 py-5  ">
         <h2 className="font-bold text-xl">Today's Task</h2>
-        <ul className="overflow-y-auto  h-[80vh] scrollbar">
+        <ul className="overflow-auto  h-[80vh] scrollbar">
           {state.Tasks.map((task, index) => (
             <Task key={task.id} task={task} index={index} />
           ))}
         </ul>
-        {/* <div className="rounded-[inherit] absolute left-0  top-1/3 z-50 w-full px-5 py-5 flex flex-col bg-[#DFBD43]">
-          <form action="">
-            <label className="block" htmlFor="Task">
-              Task Description
-            </label>
-            <input className="block" type="text" id="Task" />
-            <label className="block" htmlFor="Time">
-              Time
-            </label>
-            <input className="block" type="text" id="Time" />
+        <div
+          className={`ease-in-out flex flex-col items-center justify-center rounded-[inherit] bg-black absolute left-0 ${show} z-50 w-full px-5 py-5 border border-[#dfbd4388]`}
+        >
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5">
+              <label className="block" htmlFor="Task">
+                Task Description
+              </label>
+              <input
+                className=" text-black block"
+                type="text"
+                name="Task"
+                id="Task"
+              />
+              <label className=" block" htmlFor="Time">
+                Time
+              </label>
+              <input
+                className="  text-black block"
+                type="text"
+                name="Time"
+                id="Time"
+              />
+            </div>
+
             <button
-              className="mt-5 rounded-xl p-3 border border-black"
+              className=" border border-[#dfbd4388] rounded-xl p-3 "
               type="submit"
             >
               Add
             </button>
           </form>
-        </div> */}
+        </div>
 
         <button
           onClick={() => {
-            dispatch({ type: "ADD_NEW" });
+            setShow("bottom-0");
           }}
-          className="mt-10 bg-black rounded-full cursor-pointer absolute  shadow-xl shadow-[#dfbd4388] left-[44%] bottom-5  "
+          className="mt-10 bg-black rounded-full cursor-pointer absolute shadow-xl shadow-[#dfbd4388] left-[44%] bottom-5  "
         >
           <i className="text-[#DFBD43] text-[50px] fa-solid fa-circle-plus"></i>
         </button>
