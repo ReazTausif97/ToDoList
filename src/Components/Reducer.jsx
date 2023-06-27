@@ -1,29 +1,25 @@
 import { useReducer } from "react";
 export const defaultState = {
-  Tasks: [
-    {
-      id: 0,
-      Time: "8.30AM",
-      Task: "Code and code",
-      isDone: false,
-    },
-  ],
+  Tasks: [],
 };
 
 export const reducer = (state, action) => {
   if (action.type === "DONE") {
     state.Tasks[action.payload.index].isDone = true;
-    console.log(state.Tasks);
-    return { ...state };
   } else if (action.type === "NOT_DONE") {
     state.Tasks[action.payload.index].isDone = false;
-    console.log(state.Tasks);
-    return { ...state };
   } else if (action.type === "ADD_NEW") {
     const alltasks = state.Tasks;
-    alltasks.push(action.payload.newTask);
+    alltasks.push(action.payload.formdata);
     state.Tasks = alltasks;
-    // console.log(state);
-    return { ...state };
+  } else if (action.type === "REMOVE_TASK") {
+    state.Tasks = state.Tasks.filter((task) => task.id !== action.payload.id);
+  } else if (action.type === "UPDATE") {
+    const remaining = state.Tasks.filter(
+      (task) => task.id !== action.payload.formdata.id
+    );
+    state.Tasks = [...remaining, action.payload.formdata];
   }
+  console.log(state.Tasks);
+  return { ...state };
 };

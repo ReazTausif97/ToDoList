@@ -1,15 +1,39 @@
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { reducer, defaultState } from "./Reducer";
 
-const Task = ({ task, index }) => {
-  let { Time, Task, isDone } = task;
-  let [state, dispatch] = useReducer(reducer, defaultState);
+const Task = ({
+  task,
+  index,
+  state,
+  dispatch,
+  show,
+  setShow,
+  setCurrentTask,
+}) => {
+  const id = state.Tasks[index].id;
+
   const handlerCheckbox = (value) => {
     if (value) {
       dispatch({ type: "DONE", payload: { index, value } });
     } else {
       dispatch({ type: "NOT_DONE", payload: { index, value } });
     }
+  };
+
+  const handleSubmit = (e) => {
+    //  console.log(e.target.SubmitBtn.value);
+    //  e.preventDefault();
+    //  if (formdata.Task && formdata.Time) {
+    //    formdata.id = Date.now();
+    //    dispatch({ type: "ADD_NEW", payload: { formdata } });
+    //    setFormData({ Task: "", Time: "", isDone: false, id: "" });
+    //  } else {
+    //    alert(`Please enter: ${formdata.Task ? "Time" : "Task"}`);
+    //  }
+  };
+  const handleOnChange = (e) => {
+    formdata[e.target.name] = e.target.value;
+    setFormData({ ...formdata });
   };
   return (
     <li className="flex items-center justify-between border-2 border-white rounded-3xl p-3 mt-5">
@@ -20,7 +44,7 @@ const Task = ({ task, index }) => {
             type="checkbox"
             value=""
             id="checkboxDefault"
-            defaultChecked={isDone}
+            defaultChecked={state.Tasks[index].isDone}
             onChange={(e) => handlerCheckbox(e.target.checked)}
           />
           <label
@@ -30,13 +54,28 @@ const Task = ({ task, index }) => {
         </div>
 
         <div className="ml-5">
-          <h2>{Time}</h2>
-          <h2 className="mt-3">{Task}</h2>
+          <h2>{state.Tasks[index].Time}</h2>
+          <h2
+            className={`mt-3 ${
+              state.Tasks[index].isDone ? "line-through" : ""
+            }`}
+          >
+            {state.Tasks[index].Task}
+          </h2>
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <i className="cursor-pointer text-[#DFBD43] fa-solid fa-pen-to-square"></i>
-        <i className="cursor-pointer text-[#DFBD43] fa-solid fa-trash"></i>
+        <i
+          onClick={() => {
+            setShow(true);
+            setCurrentTask(state.Tasks[index]);
+          }}
+          className="cursor-pointer text-[#DFBD43] fa-solid fa-pen-to-square"
+        ></i>
+        <i
+          onClick={() => dispatch({ type: "REMOVE_TASK", payload: { id } })}
+          className="cursor-pointer text-[#DFBD43] fa-solid fa-trash"
+        ></i>
       </div>
     </li>
   );
